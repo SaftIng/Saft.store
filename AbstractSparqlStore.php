@@ -270,7 +270,7 @@ abstract class AbstractSparqlStore implements Store
      * @todo check if graph URI is valid
      * @todo make it possible to read graphUri from $statement, if given $graphUri is null
      */
-    public function getMatchingStatements(Statement $statement, Node $graph = null, array $options = [])
+    public function getMatchingStatements(Statement $statement, Node $graph = null, array $options = []): StatementIterator
     {
         // otherwise check, if graph was set in the statement and it is a named node and use it, if so.
         if (null === $graph && $statement->isQuad()) {
