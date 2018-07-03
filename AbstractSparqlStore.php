@@ -167,7 +167,7 @@ abstract class AbstractSparqlStore implements Store
      */
     public function createGraph(NamedNode $graph, array $options = [])
     {
-        $this->query('CREATE GRAPH <'.$graph->getUri().'>');
+        $this->query('CREATE SILENT GRAPH <'.$graph->getUri().'>');
     }
 
     /**
@@ -218,7 +218,7 @@ abstract class AbstractSparqlStore implements Store
      */
     public function dropGraph(NamedNode $graph, array $options = [])
     {
-        $this->query('DROP GRAPH <'.$graph->getUri().'>');
+        $this->query('DROP SILENT GRAPH <'.$graph->getUri().'>');
     }
 
     /**
@@ -314,7 +314,6 @@ abstract class AbstractSparqlStore implements Store
         $query .= '}';
 
         // execute query and save result
-        // TODO transform getMatchingStatements into lazy loading, so a batch loading is possible
         $result = $this->query($query, $options);
 
         /*
