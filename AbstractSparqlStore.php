@@ -349,6 +349,51 @@ abstract class AbstractSparqlStore implements Store
     }
 
     /**
+     * Determines the type of a given query in a very basic way.
+     *
+     * Returns either:
+     * - construct,
+     * - select,
+     * - insert-data
+     * - update-data
+     * - null, if unknown
+     *
+     * @param string $query
+     *
+     * @return string|null
+     *
+     * @unstable
+     *
+     * @since 2.0.0
+     */
+    public function getQueryType(string $query): ?string
+    {
+        // remove PREFIX entries at the beginning
+        $query = \preg_replace('/PREFIX\s+[a-z]+:\s*<.*?>/im', '', $query);
+
+        $query = \ltrim(\strtolower($query));
+
+        // CONSTRUCT
+        if ('construct' == \substr($query, 0, 9)) {
+            return 'construct';
+
+        // SELECT
+        } elseif ('select' == \substr($query, 0, 6)) {
+            return 'select';
+
+        // INSERT DATA
+        } elseif ('insert data' == \substr($query, 0, 11)) {
+            return 'insert-data';
+
+        // DELETE DATA
+        } elseif ('delete data' == \substr($query, 0, 11)) {
+            return 'delete-data';
+        }
+
+        return null;
+    }
+
+    /**
      * Returns true or false depending on whether or not the statements pattern has any matches in the given graph.
      *
      * @param Statement $statement it can be either a concrete or pattern-statement
