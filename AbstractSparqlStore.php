@@ -138,7 +138,11 @@ abstract class AbstractSparqlStore implements Store
          */
         foreach ($batchStatements as $graphUriToUse => $batch) {
             $content = '';
-            $graph = $this->nodeFactory->createNamedNode($graphUriToUse);
+
+            $graph = null;
+            if (null !== $graphUriToUse) {
+                $graph = $this->nodeFactory->createNamedNode($graphUriToUse);
+            }
 
             foreach ($batch as $batchEntries) {
                 $content .= $this->sparqlFormat(
